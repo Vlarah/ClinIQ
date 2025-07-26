@@ -11,8 +11,8 @@
     <h1>Welcome to ClinIQ 🩺</h1>
     <p class="subtile">Your smart clinic records system.</p>
     
-    <form onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
-      <label for="username">Username</label>
+    <form onsubmit="handleLogin(event)">
+      <label for="username">Name</label>
       <input type="text" id="username" name="username" required />
 
       <label for="password">Password</label>
