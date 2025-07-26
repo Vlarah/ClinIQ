@@ -12,7 +12,7 @@
     <p class="subtile">Your smart clinic records system.</p>
     
     <form onsubmit="handleLogin(event)">
-      <label for="username">User</label>
+      <label for="username">Username</label>
       <input type="text" id="username" name="username" required />
 
       <label for="password">Password</label>
@@ -20,6 +20,14 @@
 
       <button type="submit">Login</button>
     </form>
+
+    <script>
+      function handleLogin(event) {
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        localStorage.setItem("username",username);
+        window.location.href="dashboard.htm;";
+    </script>
   </div>
 </body>
 </html>
