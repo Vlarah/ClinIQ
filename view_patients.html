@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>All Patients – ClinIQ</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sidebar">
+    <h2>ClinIQ 🏥</h2>
+    <a href="dashboard.html">🏠 Dashboard</a>
+    <a href="add_patient.html">➕ Add Patient</a>
+    <a href="view_patients.html" class="active">🗂️ View Patients</a>
+    <a href="logout.html">❌ Logout</a>
+  </div>
+
+  <div class="main-content">
+    <h1>📋 All Patients</h1>
+    <table class="patient-table">
+      <thead>
+        <tr>
+          <th>Reg #</th>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>Sex</th>
+          <th>Address</th>
+          <th>Phone</th>
+          <th>View</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- This will be dynamically populated later -->
+        <tr>
+          <td>001</td>
+          <td>Juan Dela Cruz</td>
+          <td>45</td>
+          <td>M</td>
+          <td>Manila</td>
+          <td>09171234567</td>
+          <td><a href="patient_profile.html?id=001">🔍</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
 
