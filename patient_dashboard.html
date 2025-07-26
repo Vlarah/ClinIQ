@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fdfafa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .soap-form, .visit-history {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin: 10px;
+        }
+
+        .soap-form {
+            flex: 2;
+        }
+
+        .visit-history {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #444;
+        }
+
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        .btn {
+            background-color: #6cb4f0;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .visit-entry {
+            background-color: #f3f8fc;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .visit-entry:hover {
+            background-color: #e0efff;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header p {
+            color: #555;
+        }
+
+        .back-button {
+            margin-bottom: 15px;
+            display: inline-block;
+            text-decoration: none;
+            color: #6cb4f0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="soap-form">
+            <a href="{{ url_for('dashboard') }}" class="back-button">← Back to Clinic Dashboard</a>
+            <div class="header">
+                <h1>{{ patient.full_name }}</h1>
+                <p>Age: {{ patient.age }} | Sex: {{ patient.sex }} | Reg #: {{ patient.reg_number }}</p>
+            </div>
+            <form method="POST">
+                <h2>Today's Visit</h2>
+                <label>Subjective:</label>
+                <textarea name="subjective" rows="3" required></textarea>
+
+                <label>Objective:</label>
+                <textarea name="objective" rows="3" required></textarea>
+
+                <label>Assessment:</label>
+                <input type="text" name="assessment" required>
+
+                <label>Plan:</label>
+                <textarea name="plan" rows="3" required></textarea>
+
+                <button class="btn" type="submit">Save Visit</button>
+            </form>
+        </div>
+
+        <div class="visit-history">
+            <h2>Previous Visits</h2>
+            {% for visit in visits %}
+            <div class="visit-entry">
+                <strong>{{ visit.date }}</strong><br>
+                <span><em>{{ visit.assessment }}</em></span>
+                <!-- You can expand this to show full SOAP if clicked -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
