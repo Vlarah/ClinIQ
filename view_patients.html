@@ -15,8 +15,8 @@
     }
 
     .container {
-      max-width: 800px;
-      margin: 3rem auto;
+      max-width: 90%;
+      margin: 2rem auto;
       background: #ffffff;
       padding: 2rem;
       border-radius: 20px;
@@ -32,28 +32,46 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1.5rem;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     th, td {
-      padding: 0.8rem;
+      padding: 0.75rem 1rem;
       text-align: left;
       border-bottom: 1px solid #ddd;
     }
 
     th {
-      background-color: #f2f2f2;
-      color: #2a4d69;
+      background-color: #87bdd8;
+      color: #fff;
     }
 
-    tr:hover {
+    tr:nth-child(even) {
       background-color: #f9f9f9;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      margin: 0.25rem;
+      background-color: #87bdd8;
+      color: #fff;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background-color 0.3s;
+    }
+
+    a.button:hover {
+      background-color: #6ea9c6;
     }
 
     .back-link {
       display: block;
       text-align: center;
-      margin-top: 2rem;
+      margin-top: 1rem;
       text-decoration: none;
       color: #2a4d69;
     }
@@ -61,35 +79,34 @@
 </head>
 <body>
   <div class="container">
-    <h2>📋 All Patients</h2>
-
-    {% if patients %}
-      <table>
-        <thead>
-          <tr>
-            <th>Reg. No</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Phone</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for patient in patients %}
-            <tr>
-              <td>{{ patient.reg_no }}</td>
-              <td>{{ patient.full_name }}</td>
-              <td>{{ patient.age }}</td>
-              <td>{{ patient.sex }}</td>
-              <td>{{ patient.phone }}</td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    {% else %}
-      <p>No patients found.</p>
-    {% endif %}
-
+    <h2>👥 All Patients</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Reg. No</th>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>Sex</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for patient in patients %}
+        <tr>
+          <td>{{ patient.reg_no }}</td>
+          <td>{{ patient.full_name }}</td>
+          <td>{{ patient.age }}</td>
+          <td>{{ patient.sex }}</td>
+          <td>{{ patient.phone }}</td>
+          <td>
+            <a class="button" href="/view_patient/{{ patient.reg_no }}">🗂 View</a>
+            <a class="button" href="/edit_patient/{{ patient.reg_no }}">✏️ Edit</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     <a class="back-link" href="/dashboard">← Back to Dashboard</a>
   </div>
 </body>
