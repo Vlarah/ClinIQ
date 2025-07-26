@@ -1,143 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>All Patients – ClinIQ</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fef9f4;
-      display: flex;
-    }
-
-    .sidebar {
-      background-color: #ffe8ec;
-      width: 220px;
-      height: 100vh;
-      padding: 20px;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar h2 {
-      font-size: 22px;
-      margin-bottom: 20px;
-    }
-
-    .sidebar a {
-      text-decoration: none;
-      margin-bottom: 12px;
-      color: #333;
-      font-size: 16px;
-      padding: 10px;
-      border-radius: 12px;
-      transition: background 0.2s;
-    }
-
-    .sidebar a:hover,
-    .sidebar a.active {
-      background-color: #ffd8e4;
-    }
-
-    .main-content {
-      flex: 1;
-      padding: 40px;
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 28px;
-      color: #333;
-    }
-
-    .card {
-      background-color: #fff;
-      border-radius: 20px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 12px 16px;
-      text-align: left;
-      font-size: 15px;
-    }
-
-    th {
-      background-color: #ffeef2;
-      color: #444;
-    }
-
-    tr:nth-child(even) {
-      background-color: #fff7f8;
-    }
-
-    tr:hover {
-      background-color: #ffe3ec;
-    }
-
-    a.view-btn {
-      text-decoration: none;
-      background-color: #ff8fa3;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 10px;
-      font-size: 14px;
-    }
-
-    a.view-btn:hover {
-      background-color: #ff7a92;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>View Patients | ClinIQ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background-color: #d8eefe;
+            position: fixed;
+            padding-top: 30px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar a {
+            display: block;
+            padding: 15px 20px;
+            color: #444;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .sidebar a:hover {
+            background-color: #c0dff5;
+            border-radius: 0 20px 20px 0;
+        }
+        .main {
+            margin-left: 220px;
+            padding: 30px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #444;
+        }
+        .patient-card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: 0.2s ease;
+        }
+        .patient-card:hover {
+            transform: scale(1.01);
+        }
+        .patient-info span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .icon {
+            margin-right: 5px;
+        }
+    </style>
 </head>
 <body>
-  <div class="sidebar">
-    <h2>ClinIQ 🏥</h2>
-    <a href="dashboard.html">🏠 Dashboard</a>
-    <a href="add_patient.html">➕ Add Patient</a>
-    <a href="view_patients.html" class="active">🗂️ View Patients</a>
-    <a href="logout.html">❌ Logout</a>
-  </div>
-
-  <div class="main-content">
-    <h1>📋 All Patients</h1>
-    <div class="card">
-      <table>
-        <thead>
-          <tr>
-            <th>Reg #</th>
-            <th>Full Name</th>
-            <th>Age</th>
-            <th>Sex</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>View</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- You can dynamically add patients here -->
-          <tr>
-            <td>001</td>
-            <td>Juan Dela Cruz</td>
-            <td>45</td>
-            <td>M</td>
-            <td>Manila</td>
-            <td>09171234567</td>
-            <td><a href="patient_profile.html?id=001" class="view-btn">🔍 View</a></td>
-          </tr>
-          <!-- Add more rows here -->
-        </tbody>
-      </table>
+    <div class="sidebar">
+        <a href="/dashboard">🏠 Dashboard</a>
+        <a href="/add_patient">➕ Add Patient</a>
+        <a href="/view_patients">📋 View Patients</a>
+        <a href="/clinic_today">🚑 In Clinic Today</a>
+        <a href="/logout">❌ Logout</a>
     </div>
-  </div>
-</body>
-</html>
+
+    <div class="main">
+        <div class="title">📋 All Patients</div>
+
+        {% for patient in patients %}
+        <div class="patient-card">
+            <div class="patient-info">
+                <strong>🆔 Reg #{{ patient.reg_number }}</strong>
+            </div>
+            <div class="patient-info">
+                <span><strong>👤 Name:</strong> {{ patient.full_name }}</span>
+                <span><strong>🎂 Age:</strong> {{ patient.age }}</sp
