@@ -1,121 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>SOAP Input - ClinIQ</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; background: #f9fbfc; margin: 0; }
-    .container { max-width: 1000px; margin: auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 0 10px #ddd; }
-    h2 { margin-top: 2rem; color: #444; }
-    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.3rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #ccc; }
-    .row { display: flex; gap: 1rem; }
-    .row > div { flex: 1; }
-    .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-    .form-section { margin-bottom: 2rem; }
-    .bmi-result { font-weight: bold; color: #006699; }
-    button { background: #00aaff; border: none; color: white; padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; }
-    button:hover { background: #0077aa; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOAP Input - ClinIQ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fdf6f0;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #fddde6;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-bottom: 3px solid #fbbec5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff7f7;
+            border-radius: 16px;
+            box-shadow: 0 0 12px rgba(0,0,0,0.05);
+        }
+        h2 {
+            font-size: 20px;
+            background-color: #ffeef3;
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+        textarea, input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 500;
+        }
+        .section-toggle {
+            margin-bottom: 10px;
+        }
+        .checkbox {
+            margin-right: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+        .card {
+            background-color: #fff;
+            border: 1px solid #f0c7d1;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        .btn {
+            background-color: #fbbec5;
+            color: #333;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #f99ea8;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>SOAP Note Entry</h1>
-
-    <form id="soapForm">
-      <!-- SUBJECTIVE -->
-      <div class="form-section">
+    <header>SOAP Note Input - ClinIQ 🩺</header>
+    <div class="container">
         <h2>Subjective</h2>
-        <label>History of Present Illness</label>
-        <textarea name="hpi" rows="3"></textarea>
+        <label for="hpi">History of Present Illness:</label>
+        <textarea id="hpi" rows="3"></textarea>
 
-        <label>Past Medical History</label>
-        <textarea name="pmh" rows="2"></textarea>
+        <label for="pmh">Past Medical History:</label>
+        <textarea id="pmh" rows="2"></textarea>
 
-        <label>Family Medical History</label>
-        <textarea name="famhx" rows="2"></textarea>
+        <label for="fmh">Family Medical History:</label>
+        <textarea id="fmh" rows="2"></textarea>
 
-        <label>Social and Environmental History</label>
-        <textarea name="socenvhx" rows="2"></textarea>
+        <label for="seh">Social & Environmental History:</label>
+        <textarea id="seh" rows="2"></textarea>
 
-        <label>Review of Systems</label>
-        <div class="checkbox-grid">
-          <label><input type="checkbox" name="ros" value="Fever"> Fever</label>
-          <label><input type="checkbox" name="ros" value="Cough"> Cough</label>
-          <label><input type="checkbox" name="ros" value="Weight Loss"> Weight Loss</label>
-          <label><input type="checkbox" name="ros" value="Headache"> Headache</label>
-          <label><input type="checkbox" name="ros" value="Dizziness"> Dizziness</label>
-          <label><input type="checkbox" name="ros" value="Fatigue"> Fatigue</label>
+        <div class="section-toggle">
+            <input type="checkbox" id="show_ros" checked onclick="toggleSection('ros')">
+            <label class="checkbox" for="show_ros">Show Review of Systems (ROS)</label>
         </div>
-      </div>
+        <div id="ros" class="card">
+            <label><input type="checkbox" checked> General: No fever, weight loss, or fatigue.</label>
+            <label><input type="checkbox" checked> HEENT: No headache, vision/hearing changes.</label>
+            <label><input type="checkbox" checked> Respiratory: No cough or dyspnea.</label>
+            <label><input type="checkbox" checked> Cardiovascular: No chest pain or palpitations.</label>
+            <label><input type="checkbox" checked> Gastrointestinal: No nausea, vomiting, or diarrhea.</label>
+            <label><input type="checkbox" checked> Genitourinary: No dysuria or hematuria.</label>
+            <label><input type="checkbox" checked> Neurologic: No weakness, numbness, or seizures.</label>
+            <label><input type="checkbox" checked> Musculoskeletal: No joint pain or swelling.</label>
+            <label><input type="checkbox" checked> Skin: No rashes or lesions.</label>
+        </div>
 
-      <!-- OBJECTIVE -->
-      <div class="form-section">
         <h2>Objective</h2>
-        <div class="row">
-          <div>
-            <label>Height (cm)</label>
-            <input type="number" id="height" name="height" oninput="computeBMI()">
-          </div>
-          <div>
-            <label>Weight (kg)</label>
-            <input type="number" id="weight" name="weight" oninput="computeBMI()">
-          </div>
+        <label>Height (cm): <input type="number" id="height" onchange="calculateBMI()"></label>
+        <label>Weight (kg): <input type="number" id="weight" onchange="calculateBMI()"></label>
+        <p><strong>BMI:</strong> <span id="bmi_result">-</span> | <span id="bmi_category"></span></p>
+
+        <label for="vitals">Vital Signs:</label>
+        <textarea id="vitals" rows="2"></textarea>
+
+        <div class="section-toggle">
+            <input type="checkbox" id="show_pe" checked onclick="toggleSection('pe')">
+            <label class="checkbox" for="show_pe">Show Physical Examination</label>
         </div>
-        <div class="bmi-result" id="bmiDisplay"></div>
-
-        <label>Vital Signs</label>
-        <textarea name="vitals" placeholder="BP, HR, RR, Temp, O2 Sat..."></textarea>
-
-        <label>Physical Examination</label>
-        <div class="checkbox-grid">
-          <label><input type="checkbox" value="HEENT Normal"> HEENT</label>
-          <label><input type="checkbox" value="Lungs Clear"> Lungs</label>
-          <label><input type="checkbox" value="Heart Sounds Normal"> Heart</label>
-          <label><input type="checkbox" value="Abdomen Soft"> Abdomen</label>
-          <label><input type="checkbox" value="Extremities WNL"> Extremities</label>
+        <div id="pe" class="card">
+            <label><input type="checkbox" checked> General: Awake, alert, not in distress.</label>
+            <label><input type="checkbox" checked> HEENT: Normocephalic, no scleral icterus or nasal discharge.</label>
+            <label><input type="checkbox" checked> Neck: Supple, no lymphadenopathy or JVD.</label>
+            <label><input type="checkbox" checked> Chest/Lungs: Clear breath sounds, no rales/wheezes.</label>
+            <label><input type="checkbox" checked> Cardiovascular: Regular rate/rhythm, no murmurs.</label>
+            <label><input type="checkbox" checked> Abdomen: Soft, non-tender, no organomegaly.</label>
+            <label><input type="checkbox" checked> Extremities: No cyanosis, clubbing, or edema.</label>
+            <label><input type="checkbox" checked> Neurologic: Grossly intact, alert.</label>
         </div>
-        <label>Other Findings</label>
-        <textarea name="pe_other" rows="2"></textarea>
 
-        <label>Labs & Imaging</label>
-        <textarea name="labs" rows="2"></textarea>
-      </div>
+        <label for="labs">Lab/Imaging Results:</label>
+        <textarea id="labs" rows="3"></textarea>
 
-      <!-- ASSESSMENT -->
-      <div class="form-section">
         <h2>Assessment</h2>
-        <textarea name="assessment" rows="3"></textarea>
-      </div>
+        <textarea rows="3"></textarea>
 
-      <!-- PLAN -->
-      <div class="form-section">
         <h2>Plan</h2>
-        <textarea name="plan" rows="3"></textarea>
-      </div>
+        <textarea rows="3"></textarea>
 
-      <button type="submit">Save Visit</button>
-    </form>
-  </div>
+        <br><br>
+        <button class="btn" onclick="window.print()">🖨️ Print/Export</button>
+    </div>
 
-  <script>
-    function computeBMI() {
-      const h = parseFloat(document.getElementById("height").value);
-      const w = parseFloat(document.getElementById("weight").value);
-      if (!h || !w || h <= 0 || w <= 0) {
-        document.getElementById("bmiDisplay").textContent = "";
-        return;
-      }
-      const heightM = h / 100;
-      const bmi = w / (heightM * heightM);
-      let category = "";
-      if (bmi < 18.5) category = "Underweight";
-      else if (bmi < 23) category = "Normal";
-      else if (bmi < 25) category = "Overweight";
-      else category = "Obese";
+    <script>
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            section.classList.toggle('hidden');
+        }
 
-      document.getElementById("bmiDisplay").textContent = `BMI: ${bmi.toFixed(1)} (${category})`;
-    }
-  </script>
+        function calculateBMI() {
+            const height = parseFloat(document.getElementById("height").value);
+            const weight = parseFloat(document.getElementById("weight").value);
+            if (height && weight) {
+                const bmi = weight / ((height / 100) ** 2);
+                document.getElementById("bmi_result").textContent = bmi.toFixed(1);
+                let category = "";
+                if (bmi < 18.5) category = "Underweight";
+                else if (bmi < 23) category = "Normal (Asia-Pacific)";
+                else if (bmi < 25) category = "Overweight (At Risk)";
+                else if (bmi < 30) category = "Obese I";
+                else category = "Obese II";
+                document.getElementById("bmi_category").textContent = category;
+            }
+        }
+    </script>
 </body>
 </html>
