@@ -9,69 +9,61 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #fefdfd;
-      color: #333;
       margin: 0;
       padding: 0;
+      color: #333;
     }
 
     .container {
-      max-width: 90%;
-      margin: 2rem auto;
+      max-width: 900px;
+      margin: 3rem auto;
       background: #ffffff;
       padding: 2rem;
       border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
     }
 
     h2 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
       color: #2a4d69;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      font-size: 1rem;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
     th, td {
-      padding: 0.75rem 1rem;
+      padding: 0.8rem;
       text-align: left;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background-color: #f1f9ff;
+      cursor: pointer;
     }
 
     th {
-      background-color: #87bdd8;
-      color: #fff;
-    }
-
-    tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    a.button {
-      display: inline-block;
-      padding: 0.5rem 1rem;
-      margin: 0.25rem;
-      background-color: #87bdd8;
-      color: #fff;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: background-color 0.3s;
-    }
-
-    a.button:hover {
-      background-color: #6ea9c6;
+      background-color: #d6eaf8;
+      color: #2a4d69;
     }
 
     .back-link {
       display: block;
       text-align: center;
-      margin-top: 1rem;
+      margin-top: 1.5rem;
       text-decoration: none;
       color: #2a4d69;
     }
@@ -80,34 +72,47 @@
 <body>
   <div class="container">
     <h2>👥 All Patients</h2>
-    <table>
+    <input type="text" id="search" placeholder="🔍 Search patient by name..." onkeyup="filterPatients()">
+
+    <table id="patientTable">
       <thead>
         <tr>
-          <th>Reg. No</th>
+          <th>Reg #</th>
           <th>Full Name</th>
           <th>Age</th>
           <th>Sex</th>
-          <th>Phone</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         {% for patient in patients %}
-        <tr>
-          <td>{{ patient.reg_no }}</td>
-          <td>{{ patient.full_name }}</td>
-          <td>{{ patient.age }}</td>
-          <td>{{ patient.sex }}</td>
-          <td>{{ patient.phone }}</td>
-          <td>
-            <a class="button" href="/view_patient/{{ patient.reg_no }}">🗂 View</a>
-            <a class="button" href="/edit_patient/{{ patient.reg_no }}">✏️ Edit</a>
-          </td>
+        <tr onclick="location.href='/view_patient/{{ patient['reg_no'] }}'">
+          <td>{{ patient['reg_no'] }}</td>
+          <td>{{ patient['full_name'] }}</td>
+          <td>{{ patient['age'] }}</td>
+          <td>{{ patient['sex'] }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
+
     <a class="back-link" href="/dashboard">← Back to Dashboard</a>
   </div>
+
+  <script>
+    function filterPatients() {
+      let input = document.getElementById("search");
+      let filter = input.value.toLowerCase();
+      let rows = document.querySelectorAll("#patientTable tbody tr");
+
+      rows.forEach(row => {
+        let nameCell = row.cells[1];
+        if (nameCell.textContent.toLowerCase().includes(filter)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+  </script>
 </body>
 </html>
