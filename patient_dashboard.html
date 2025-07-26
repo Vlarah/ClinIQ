@@ -1,136 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Patient Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fdfafa;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            display: flex;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .soap-form, .visit-history {
-            background-color: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin: 10px;
-        }
-
-        .soap-form {
-            flex: 2;
-        }
-
-        .visit-history {
-            flex: 1;
-            overflow-y: auto;
-            max-height: calc(100vh - 40px);
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #444;
-        }
-
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-
-        .btn {
-            background-color: #6cb4f0;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .visit-entry {
-            background-color: #f3f8fc;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .visit-entry:hover {
-            background-color: #e0efff;
-        }
-
-        .header {
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .header p {
-            color: #555;
-        }
-
-        .back-button {
-            margin-bottom: 15px;
-            display: inline-block;
-            text-decoration: none;
-            color: #6cb4f0;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>SOAP Input - ClinIQ</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f9fbfc; margin: 0; }
+    .container { max-width: 1000px; margin: auto; padding: 2rem; background: white; border-radius: 12px; box-shadow: 0 0 10px #ddd; }
+    h2 { margin-top: 2rem; color: #444; }
+    input, textarea, select { width: 100%; padding: 0.5rem; margin-top: 0.3rem; margin-bottom: 1rem; border-radius: 8px; border: 1px solid #ccc; }
+    .row { display: flex; gap: 1rem; }
+    .row > div { flex: 1; }
+    .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+    .form-section { margin-bottom: 2rem; }
+    .bmi-result { font-weight: bold; color: #006699; }
+    button { background: #00aaff; border: none; color: white; padding: 0.7rem 1.2rem; border-radius: 10px; cursor: pointer; }
+    button:hover { background: #0077aa; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="soap-form">
-            <a href="{{ url_for('dashboard') }}" class="back-button">← Back to Clinic Dashboard</a>
-            <div class="header">
-                <h1>{{ patient.full_name }}</h1>
-                <p>Age: {{ patient.age }} | Sex: {{ patient.sex }} | Reg #: {{ patient.reg_number }}</p>
-            </div>
-            <form method="POST">
-                <h2>Today's Visit</h2>
-                <label>Subjective:</label>
-                <textarea name="subjective" rows="3" required></textarea>
+  <div class="container">
+    <h1>SOAP Note Entry</h1>
 
-                <label>Objective:</label>
-                <textarea name="objective" rows="3" required></textarea>
+    <form id="soapForm">
+      <!-- SUBJECTIVE -->
+      <div class="form-section">
+        <h2>Subjective</h2>
+        <label>History of Present Illness</label>
+        <textarea name="hpi" rows="3"></textarea>
 
-                <label>Assessment:</label>
-                <input type="text" name="assessment" required>
+        <label>Past Medical History</label>
+        <textarea name="pmh" rows="2"></textarea>
 
-                <label>Plan:</label>
-                <textarea name="plan" rows="3" required></textarea>
+        <label>Family Medical History</label>
+        <textarea name="famhx" rows="2"></textarea>
 
-                <button class="btn" type="submit">Save Visit</button>
-            </form>
+        <label>Social and Environmental History</label>
+        <textarea name="socenvhx" rows="2"></textarea>
+
+        <label>Review of Systems</label>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" name="ros" value="Fever"> Fever</label>
+          <label><input type="checkbox" name="ros" value="Cough"> Cough</label>
+          <label><input type="checkbox" name="ros" value="Weight Loss"> Weight Loss</label>
+          <label><input type="checkbox" name="ros" value="Headache"> Headache</label>
+          <label><input type="checkbox" name="ros" value="Dizziness"> Dizziness</label>
+          <label><input type="checkbox" name="ros" value="Fatigue"> Fatigue</label>
         </div>
+      </div>
 
-        <div class="visit-history">
-            <h2>Previous Visits</h2>
-            {% for visit in visits %}
-            <div class="visit-entry">
-                <strong>{{ visit.date }}</strong><br>
-                <span><em>{{ visit.assessment }}</em></span>
-                <!-- You can expand this to show full SOAP if clicked -->
-            </div>
-            {% endfor %}
+      <!-- OBJECTIVE -->
+      <div class="form-section">
+        <h2>Objective</h2>
+        <div class="row">
+          <div>
+            <label>Height (cm)</label>
+            <input type="number" id="height" name="height" oninput="computeBMI()">
+          </div>
+          <div>
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" name="weight" oninput="computeBMI()">
+          </div>
         </div>
-    </div>
+        <div class="bmi-result" id="bmiDisplay"></div>
+
+        <label>Vital Signs</label>
+        <textarea name="vitals" placeholder="BP, HR, RR, Temp, O2 Sat..."></textarea>
+
+        <label>Physical Examination</label>
+        <div class="checkbox-grid">
+          <label><input type="checkbox" value="HEENT Normal"> HEENT</label>
+          <label><input type="checkbox" value="Lungs Clear"> Lungs</label>
+          <label><input type="checkbox" value="Heart Sounds Normal"> Heart</label>
+          <label><input type="checkbox" value="Abdomen Soft"> Abdomen</label>
+          <label><input type="checkbox" value="Extremities WNL"> Extremities</label>
+        </div>
+        <label>Other Findings</label>
+        <textarea name="pe_other" rows="2"></textarea>
+
+        <label>Labs & Imaging</label>
+        <textarea name="labs" rows="2"></textarea>
+      </div>
+
+      <!-- ASSESSMENT -->
+      <div class="form-section">
+        <h2>Assessment</h2>
+        <textarea name="assessment" rows="3"></textarea>
+      </div>
+
+      <!-- PLAN -->
+      <div class="form-section">
+        <h2>Plan</h2>
+        <textarea name="plan" rows="3"></textarea>
+      </div>
+
+      <button type="submit">Save Visit</button>
+    </form>
+  </div>
+
+  <script>
+    function computeBMI() {
+      const h = parseFloat(document.getElementById("height").value);
+      const w = parseFloat(document.getElementById("weight").value);
+      if (!h || !w || h <= 0 || w <= 0) {
+        document.getElementById("bmiDisplay").textContent = "";
+        return;
+      }
+      const heightM = h / 100;
+      const bmi = w / (heightM * heightM);
+      let category = "";
+      if (bmi < 18.5) category = "Underweight";
+      else if (bmi < 23) category = "Normal";
+      else if (bmi < 25) category = "Overweight";
+      else category = "Obese";
+
+      document.getElementById("bmiDisplay").textContent = `BMI: ${bmi.toFixed(1)} (${category})`;
+    }
+  </script>
 </body>
 </html>
