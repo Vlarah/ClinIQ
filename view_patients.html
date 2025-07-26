@@ -1,83 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Patients | ClinIQ</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background-color: #f8f9fa;
-        }
-        .sidebar {
-            width: 220px;
-            height: 100vh;
-            background-color: #d8eefe;
-            position: fixed;
-            padding-top: 30px;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-        }
-        .sidebar a {
-            display: block;
-            padding: 15px 20px;
-            color: #444;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .sidebar a:hover {
-            background-color: #c0dff5;
-            border-radius: 0 20px 20px 0;
-        }
-        .main {
-            margin-left: 220px;
-            padding: 30px;
-        }
-        .title {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #444;
-        }
-        .patient-card {
-            background-color: #ffffff;
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            transition: 0.2s ease;
-        }
-        .patient-card:hover {
-            transform: scale(1.01);
-        }
-        .patient-info span {
-            display: inline-block;
-            margin-right: 10px;
-        }
-        .icon {
-            margin-right: 5px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Patients | ClinIQ</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fefdfd;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #2a4d69;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.5rem;
+    }
+
+    th, td {
+      padding: 0.8rem;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #f2f2f2;
+      color: #2a4d69;
+    }
+
+    tr:hover {
+      background-color: #f9f9f9;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 2rem;
+      text-decoration: none;
+      color: #2a4d69;
+    }
+  </style>
 </head>
 <body>
-    <div class="sidebar">
-        <a href="/dashboard">🏠 Dashboard</a>
-        <a href="/add_patient">➕ Add Patient</a>
-        <a href="/view_patients">📋 View Patients</a>
-        <a href="/clinic_today">🚑 In Clinic Today</a>
-        <a href="/logout">❌ Logout</a>
-    </div>
+  <div class="container">
+    <h2>📋 All Patients</h2>
 
-    <div class="main">
-        <div class="title">📋 All Patients</div>
+    {% if patients %}
+      <table>
+        <thead>
+          <tr>
+            <th>Reg. No</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Sex</th>
+            <th>Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for patient in patients %}
+            <tr>
+              <td>{{ patient.reg_no }}</td>
+              <td>{{ patient.full_name }}</td>
+              <td>{{ patient.age }}</td>
+              <td>{{ patient.sex }}</td>
+              <td>{{ patient.phone }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No patients found.</p>
+    {% endif %}
 
-        {% for patient in patients %}
-        <div class="patient-card">
-            <div class="patient-info">
-                <strong>🆔 Reg #{{ patient.reg_number }}</strong>
-            </div>
-            <div class="patient-info">
-                <span><strong>👤 Name:</strong> {{ patient.full_name }}</span>
-                <span><strong>🎂 Age:</strong> {{ patient.age }}</sp
+    <a class="back-link" href="/dashboard">← Back to Dashboard</a>
+  </div>
+</body>
+</html>
