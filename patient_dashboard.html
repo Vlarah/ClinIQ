@@ -1,136 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Patient Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: #fdfafa;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            display: flex;
-            height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .soap-form, .visit-history {
-            background-color: #fff;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            padding: 20px;
-            margin: 10px;
-        }
-
-        .soap-form {
-            flex: 2;
-        }
-
-        .visit-history {
-            flex: 1;
-            overflow-y: auto;
-            max-height: calc(100vh - 40px);
-        }
-
-        h2 {
-            margin-top: 0;
-            color: #444;
-        }
-
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-
-        .btn {
-            background-color: #6cb4f0;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .visit-entry {
-            background-color: #f3f8fc;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 12px;
-            cursor: pointer;
-        }
-
-        .visit-entry:hover {
-            background-color: #e0efff;
-        }
-
-        .header {
-            margin-bottom: 20px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .header p {
-            color: #555;
-        }
-
-        .back-button {
-            margin-bottom: 15px;
-            display: inline-block;
-            text-decoration: none;
-            color: #6cb4f0;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClinIQ - ROS and PE</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: #eaf6f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 900px;
+      overflow-y: auto;
+      max-height: 95vh;
+    }
+    h1, h2 {
+      color: #007b83;
+      margin-bottom: 0.5rem;
+    }
+    .section {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.2rem;
+      color: #333;
+    }
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+    }
+    .toggle-section {
+      margin: 0.5rem 0;
+    }
+    .summary-line {
+      margin-left: 1rem;
+      color: #444;
+    }
+    textarea {
+      width: 100%;
+      height: 120px;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      font-family: inherit;
+    }
+    button {
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #6cc5c3;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #58b0ae;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="soap-form">
-            <a href="{{ url_for('dashboard') }}" class="back-button">← Back to Clinic Dashboard</a>
-            <div class="header">
-                <h1>{{ patient.full_name }}</h1>
-                <p>Age: {{ patient.age }} | Sex: {{ patient.sex }} | Reg #: {{ patient.reg_number }}</p>
-            </div>
-            <form method="POST">
-                <h2>Today's Visit</h2>
-                <label>Subjective:</label>
-                <textarea name="subjective" rows="3" required></textarea>
+  <div class="container">
+    <h1>Review of Systems</h1>
 
-                <label>Objective:</label>
-                <textarea name="objective" rows="3" required></textarea>
+    <div class="section">
+      <div class="toggle-section">
+        <input type="checkbox" id="constitutionalCheck" checked onchange="toggleSection('constitutional')">
+        <label for="constitutionalCheck">Constitutional</label>
+      </div>
+      <div id="constitutional" class="summary-line">
+        Weight change, fever, chills, night sweats, fatigue, malaise
+      </div>
 
-                <label>Assessment:</label>
-                <input type="text" name="assessment" required>
+      <div class="toggle-section">
+        <input type="checkbox" id="entCheck" checked onchange="toggleSection('ent')">
+        <label for="entCheck">ENT/Mouth</label>
+      </div>
+      <div id="ent" class="summary-line">
+        Hearing changes, ear pain, nasal congestion, sinus pain, hoarseness, sore throat, rhinorrhea, swallowing difficulty
+      </div>
 
-                <label>Plan:</label>
-                <textarea name="plan" rows="3" required></textarea>
+      <div class="toggle-section">
+        <input type="checkbox" id="eyesCheck" checked onchange="toggleSection('eyes')">
+        <label for="eyesCheck">Eyes</label>
+      </div>
+      <div id="eyes" class="summary-line">
+        Eye pain, swelling, redness, foreign body, discharge, vision changes
+      </div>
 
-                <button class="btn" type="submit">Save Visit</button>
-            </form>
-        </div>
+      <div class="toggle-section">
+        <input type="checkbox" id="cardioCheck" checked onchange="toggleSection('cardio')">
+        <label for="cardioCheck">Cardiovascular</label>
+      </div>
+      <div id="cardio" class="summary-line">
+        Chest pain, shortness of breath, paroxysmal nocturnal dyspnea, dyspnea on exertion, orthopnea, claudication, edema, palpitations
+      </div>
 
-        <div class="visit-history">
-            <h2>Previous Visits</h2>
-            {% for visit in visits %}
-            <div class="visit-entry">
-                <strong>{{ visit.date }}</strong><br>
-                <span><em>{{ visit.assessment }}</em></span>
-                <!-- You can expand this to show full SOAP if clicked -->
-            </div>
-            {% endfor %}
-        </div>
+      <div class="toggle-section">
+        <input type="checkbox" id="respCheck" checked onchange="toggleSection('resp')">
+        <label for="respCheck">Respiratory</label>
+      </div>
+      <div id="resp" class="summary-line">
+        Cough, sputum, wheezing, smoke exposure, dyspnea
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="giCheck" checked onchange="toggleSection('gi')">
+        <label for="giCheck">Gastrointestinal</label>
+      </div>
+      <div id="gi" class="summary-line">
+        Nausea, vomiting, diarrhea, constipation, pain, heartburn, anorexia, dysphagia, hematochezia, melena, flatulence, jaundice
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="guCheck" checked onchange="toggleSection('gu')">
+        <label for="guCheck">Genitourinary</label>
+      </div>
+      <div id="gu" class="summary-line">
+        Dysmenorrhea, dysfunctional uterine bleeding, dyspareunia, dysuria, urinary frequency, hematuria, urinary incontinence, urgency, flank pain, urinary flow changes, hesitancy
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="mskCheck" checked onchange="toggleSection('msk')">
+        <label for="mskCheck">Musculoskeletal</label>
+      </div>
+      <div id="msk" class="summary-line">
+        Arthralgias, myalgias, joint swelling, joint stiffness, back pain, neck pain, injury history
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="skinCheck" checked onchange="toggleSection('skin')">
+        <label for="skinCheck">Skin</label>
+      </div>
+      <div id="skin" class="summary-line">
+        Skin lesions, pruritus, hair changes, breast/skin changes, nipple discharge
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="neuroCheck" checked onchange="toggleSection('neuro')">
+        <label for="neuroCheck">Neurological</label>
+      </div>
+      <div id="neuro" class="summary-line">
+        Weakness, numbness, paresthesias, loss of consciousness, syncope, dizziness, headache, coordination changes, recent falls
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="psychCheck" checked onchange="toggleSection('psych')">
+        <label for="psychCheck">Psychiatric</label>
+      </div>
+      <div id="psych" class="summary-line">
+        Anxiety/panic, depression, insomnia, personality changes, delusions, rumination, suicidal ideation, homicidal ideation, autistic behavior, vegetative symptoms, social issues, memory changes, violence/abuse history, eating concerns
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="hemeCheck" checked onchange="toggleSection('heme')">
+        <label for="hemeCheck">Hematologic/Lymphatic</label>
+      </div>
+      <div id="heme" class="summary-line">
+        Bruising, bleeding, transfusions history, lymphadenopathy
+      </div>
+
+      <div class="toggle-section">
+        <input type="checkbox" id="endoCheck" checked onchange="toggleSection('endo')">
+        <label for="endoCheck">Endocrine</label>
+      </div>
+      <div id="endo" class="summary-line">
+        Polyuria, polydipsia, temperature intolerance
+      </div>
     </div>
+
+    <h2>Physical Exam & BMI</h2>
+    <div class="section">
+      <label for="height">Height (cm):</label>
+      <input type="number" id="height" placeholder="e.g. 160">
+      <label for="weight">Weight (kg):</label>
+      <input type="number" id="weight" placeholder="e.g. 55">
+      <button onclick="calculateBMI()">Calculate BMI</button>
+      <p id="bmiResult"></p>
+    </div>
+
+    <div class="section">
+      <label for="peNotes">Physical Exam Notes:</label>
+      <textarea id="peNotes">Awake, alert, ambulatory, not in distress. Vitals stable. Unremarkable head, ENT, chest and abdomen exam. No skin lesions. Moves all extremities. Oriented, coherent.</textarea>
+    </div>
+
+    <div class="section">
+      <button onclick="window.print()">🖨️ Print/Export</button>
+    </div>
+  </div>
+
+  <script>
+    function toggleSection(id) {
+      const section = document.getElementById(id);
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('height').value);
+      const weight = parseFloat(document.getElementById('weight').value);
+      const bmi = weight / ((height / 100) ** 2);
+      document.getElementById('bmiResult').textContent = isNaN(bmi) ? "Invalid input" : `BMI: ${bmi.toFixed(1)}`;
+    }
+  </script>
 </body>
 </html>
