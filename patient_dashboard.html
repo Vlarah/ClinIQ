@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ClinIQ - ROS and PE</title>
+  <title>SOAP Form</title>
   <style>
     body {
       margin: 0;
@@ -11,204 +10,188 @@
       background: #eaf6f6;
       display: flex;
       justify-content: center;
-      align-items: center;
-      height: 100vh;
+      align-items: flex-start;
+      padding: 40px;
     }
     .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       width: 90%;
       max-width: 900px;
-      overflow-y: auto;
-      max-height: 95vh;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     }
-    h1, h2 {
-      color: #007b83;
-      margin-bottom: 0.5rem;
-    }
-    .section {
-      margin-bottom: 1.5rem;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.2rem;
+    h2 {
+      margin-top: 30px;
       color: #333;
+      font-size: 1.5rem;
     }
-    input[type="checkbox"] {
-      margin-right: 0.5rem;
-    }
-    .toggle-section {
-      margin: 0.5rem 0;
-    }
-    .summary-line {
-      margin-left: 1rem;
-      color: #444;
-    }
-    textarea {
+    textarea, input[type="text"], input[type="number"] {
       width: 100%;
-      height: 120px;
-      border-radius: 0.5rem;
+      padding: 10px;
       border: 1px solid #ccc;
-      padding: 0.5rem;
-      font-family: inherit;
+      border-radius: 8px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      resize: vertical;
     }
-    button {
-      padding: 0.6rem 1rem;
-      border: none;
-      border-radius: 0.5rem;
-      background-color: #6cc5c3;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
+    .checkbox-group label {
+      display: block;
+      margin-bottom: 5px;
     }
-    button:hover {
-      background-color: #58b0ae;
+    .checkbox-group input[type="checkbox"] {
+      margin-right: 10px;
+    }
+    .vitals input {
+      width: 80px;
+      margin-right: 10px;
+    }
+    .pe-section {
+      margin-bottom: 15px;
+    }
+    .pe-section label {
+      display: block;
+      margin-bottom: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Review of Systems</h1>
+<div class="container">
+  <h2>Subjective</h2>
+  <label>History of Present Illness</label>
+  <textarea rows="3"></textarea>
 
-    <div class="section">
-      <div class="toggle-section">
-        <input type="checkbox" id="constitutionalCheck" checked onchange="toggleSection('constitutional')">
-        <label for="constitutionalCheck">Constitutional</label>
-      </div>
-      <div id="constitutional" class="summary-line">
-        Weight change, fever, chills, night sweats, fatigue, malaise
-      </div>
+  <label>Past Medical History</label>
+  <textarea rows="2"></textarea>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="entCheck" checked onchange="toggleSection('ent')">
-        <label for="entCheck">ENT/Mouth</label>
-      </div>
-      <div id="ent" class="summary-line">
-        Hearing changes, ear pain, nasal congestion, sinus pain, hoarseness, sore throat, rhinorrhea, swallowing difficulty
-      </div>
+  <label>Family Medical History</label>
+  <textarea rows="2"></textarea>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="eyesCheck" checked onchange="toggleSection('eyes')">
-        <label for="eyesCheck">Eyes</label>
-      </div>
-      <div id="eyes" class="summary-line">
-        Eye pain, swelling, redness, foreign body, discharge, vision changes
-      </div>
+  <label>Social and Environmental History</label>
+  <textarea rows="2"></textarea>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="cardioCheck" checked onchange="toggleSection('cardio')">
-        <label for="cardioCheck">Cardiovascular</label>
-      </div>
-      <div id="cardio" class="summary-line">
-        Chest pain, shortness of breath, paroxysmal nocturnal dyspnea, dyspnea on exertion, orthopnea, claudication, edema, palpitations
-      </div>
+  <h3>Review of Systems</h3>
+  <div class="checkbox-group">
+    <strong>General:</strong>
+    <label><input type="checkbox"> fever</label>
+    <label><input type="checkbox"> chills</label>
+    <label><input type="checkbox"> unintentional weight loss</label>
+    <label><input type="checkbox"> loss of appetite</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="respCheck" checked onchange="toggleSection('resp')">
-        <label for="respCheck">Respiratory</label>
-      </div>
-      <div id="resp" class="summary-line">
-        Cough, sputum, wheezing, smoke exposure, dyspnea
-      </div>
+    <strong>Skin:</strong>
+    <label><input type="checkbox"> rashes</label>
+    <label><input type="checkbox"> pruritus</label>
+    <label><input type="checkbox"> jaundice</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="giCheck" checked onchange="toggleSection('gi')">
-        <label for="giCheck">Gastrointestinal</label>
-      </div>
-      <div id="gi" class="summary-line">
-        Nausea, vomiting, diarrhea, constipation, pain, heartburn, anorexia, dysphagia, hematochezia, melena, flatulence, jaundice
-      </div>
+    <strong>HEENT:</strong>
+    <label><input type="checkbox"> hoarseness of voice</label>
+    <label><input type="checkbox"> blurring of vision</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="guCheck" checked onchange="toggleSection('gu')">
-        <label for="guCheck">Genitourinary</label>
-      </div>
-      <div id="gu" class="summary-line">
-        Dysmenorrhea, dysfunctional uterine bleeding, dyspareunia, dysuria, urinary frequency, hematuria, urinary incontinence, urgency, flank pain, urinary flow changes, hesitancy
-      </div>
+    <strong>Respiratory:</strong>
+    <label><input type="checkbox"> cough</label>
+    <label><input type="checkbox"> colds</label>
+    <label><input type="checkbox"> dyspnea</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="mskCheck" checked onchange="toggleSection('msk')">
-        <label for="mskCheck">Musculoskeletal</label>
-      </div>
-      <div id="msk" class="summary-line">
-        Arthralgias, myalgias, joint swelling, joint stiffness, back pain, neck pain, injury history
-      </div>
+    <strong>Cardiovascular:</strong>
+    <label><input type="checkbox"> chest pain</label>
+    <label><input type="checkbox"> palpitations</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="skinCheck" checked onchange="toggleSection('skin')">
-        <label for="skinCheck">Skin</label>
-      </div>
-      <div id="skin" class="summary-line">
-        Skin lesions, pruritus, hair changes, breast/skin changes, nipple discharge
-      </div>
+    <strong>Gastrointestinal:</strong>
+    <label><input type="checkbox"> nausea</label>
+    <label><input type="checkbox"> abdominal pain</label>
+    <label><input type="checkbox"> vomiting</label>
+    <label><input type="checkbox"> dysphagia</label>
+    <label><input type="checkbox"> constipation</label>
+    <label><input type="checkbox"> diarrhea</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="neuroCheck" checked onchange="toggleSection('neuro')">
-        <label for="neuroCheck">Neurological</label>
-      </div>
-      <div id="neuro" class="summary-line">
-        Weakness, numbness, paresthesias, loss of consciousness, syncope, dizziness, headache, coordination changes, recent falls
-      </div>
+    <strong>Genitourinary:</strong>
+    <label><input type="checkbox"> change in urine frequency</label>
+    <label><input type="checkbox"> dysuria</label>
+    <label><input type="checkbox"> hematuria</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="psychCheck" checked onchange="toggleSection('psych')">
-        <label for="psychCheck">Psychiatric</label>
-      </div>
-      <div id="psych" class="summary-line">
-        Anxiety/panic, depression, insomnia, personality changes, delusions, rumination, suicidal ideation, homicidal ideation, autistic behavior, vegetative symptoms, social issues, memory changes, violence/abuse history, eating concerns
-      </div>
+    <strong>Musculoskeletal:</strong>
+    <label><input type="checkbox"> weakness</label>
+    <label><input type="checkbox"> bilateral knee and hip pain</label>
+    <label><input type="checkbox"> limitation of movement</label>
 
-      <div class="toggle-section">
-        <input type="checkbox" id="hemeCheck" checked onchange="toggleSection('heme')">
-        <label for="hemeCheck">Hematologic/Lymphatic</label>
-      </div>
-      <div id="heme" class="summary-line">
-        Bruising, bleeding, transfusions history, lymphadenopathy
-      </div>
-
-      <div class="toggle-section">
-        <input type="checkbox" id="endoCheck" checked onchange="toggleSection('endo')">
-        <label for="endoCheck">Endocrine</label>
-      </div>
-      <div id="endo" class="summary-line">
-        Polyuria, polydipsia, temperature intolerance
-      </div>
-    </div>
-
-    <h2>Physical Exam & BMI</h2>
-    <div class="section">
-      <label for="height">Height (cm):</label>
-      <input type="number" id="height" placeholder="e.g. 160">
-      <label for="weight">Weight (kg):</label>
-      <input type="number" id="weight" placeholder="e.g. 55">
-      <button onclick="calculateBMI()">Calculate BMI</button>
-      <p id="bmiResult"></p>
-    </div>
-
-    <div class="section">
-      <label for="peNotes">Physical Exam Notes:</label>
-      <textarea id="peNotes">Awake, alert, ambulatory, not in distress. Vitals stable. Unremarkable head, ENT, chest and abdomen exam. No skin lesions. Moves all extremities. Oriented, coherent.</textarea>
-    </div>
-
-    <div class="section">
-      <button onclick="window.print()">🖨️ Print/Export</button>
-    </div>
+    <strong>Neurologic:</strong>
+    <label><input type="checkbox"> throbbing headache</label>
+    <label><input type="checkbox"> dizziness</label>
+    <label><input type="checkbox"> numbness</label>
   </div>
 
-  <script>
-    function toggleSection(id) {
-      const section = document.getElementById(id);
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
-    function calculateBMI() {
-      const height = parseFloat(document.getElementById('height').value);
-      const weight = parseFloat(document.getElementById('weight').value);
-      const bmi = weight / ((height / 100) ** 2);
-      document.getElementById('bmiResult').textContent = isNaN(bmi) ? "Invalid input" : `BMI: ${bmi.toFixed(1)}`;
-    }
-  </script>
+  <h2>Objective</h2>
+  <div class="vitals">
+    <label>Vital Signs</label>
+    <input type="text" placeholder="BP">
+    <input type="text" placeholder="HR">
+    <input type="text" placeholder="RR">
+    <input type="text" placeholder="Temp">
+    <input type="text" placeholder="SpO2">
+  </div>
+
+  <div>
+    <label>Height (cm)</label>
+    <input type="number" id="height" oninput="computeBMI()">
+    <label>Weight (kg)</label>
+    <input type="number" id="weight" oninput="computeBMI()">
+    <label>BMI:</label>
+    <input type="text" id="bmi" readonly>
+    <label>Category:</label>
+    <input type="text" id="bmi-category" readonly>
+  </div>
+
+  <h3>Physical Examination</h3>
+  <div class="pe-section">
+    <label><input type="checkbox"> Unremarkable PE</label>
+    <label>General</label>
+    <textarea rows="1"></textarea>
+    <label>Neurology</label>
+    <textarea rows="1"></textarea>
+    <label>Skin</label>
+    <textarea rows="1"></textarea>
+    <label>HEENT</label>
+    <textarea rows="1"></textarea>
+    <label>Respiratory</label>
+    <textarea rows="1"></textarea>
+    <label>Cardiovascular</label>
+    <textarea rows="1"></textarea>
+    <label>Abdomen</label>
+    <textarea rows="1"></textarea>
+    <label>Musculoskeletal</label>
+    <textarea rows="1"></textarea>
+    <label>Reproductive System</label>
+    <textarea rows="1"></textarea>
+  </div>
+
+  <h2>Assessment</h2>
+  <textarea rows="4"></textarea>
+
+  <h2>Plan</h2>
+  <textarea rows="4"></textarea>
+</div>
+
+<script>
+  function computeBMI() {
+    const height = parseFloat(document.getElementById('height').value);
+    const weight = parseFloat(document.getElementById('weight').value);
+    const bmiBox = document.getElementById('bmi');
+    const catBox = document.getElementById('bmi-category');
+    if (!height || !weight) return;
+
+    const heightInM = height / 100;
+    const bmi = weight / (heightInM * heightInM);
+    bmiBox.value = bmi.toFixed(2);
+
+    let category = '';
+    if (bmi < 18.5) category = 'Underweight';
+    else if (bmi < 23) category = 'Normal';
+    else if (bmi < 25) category = 'Overweight (At Risk)';
+    else if (bmi < 30) category = 'Obese I';
+    else category = 'Obese II';
+
+    catBox.value = category;
+  }
+</script>
 </body>
 </html>
