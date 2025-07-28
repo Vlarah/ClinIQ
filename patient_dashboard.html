@@ -3,238 +3,228 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SOAP Note</title>
+  <title>ClinIQ - SOAP</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
       background: #eaf6f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
-    }
-    .container {
-      display: flex;
-      width: 95%;
-      max-width: 1600px;
-      height: 95vh;
-      background: white;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      border-radius: 12px;
       overflow: hidden;
     }
-    .soap-form {
-      flex: 2;
-      padding: 20px;
+    header {
+      background-color: #007B8A;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    #container {
+      display: flex;
+      height: calc(100vh - 80px);
+    }
+    #main {
+      flex: 3;
+      padding: 1rem;
       overflow-y: auto;
     }
-    .sidebar {
+    #sidebar {
       flex: 1;
-      border-left: 1px solid #ccc;
-      padding: 20px;
-      background: #f7f9f9;
+      background-color: #fff;
+      border-left: 2px solid #ccc;
+      padding: 1rem;
       overflow-y: auto;
     }
     h2 {
-      margin-top: 20px;
+      margin-top: 2rem;
     }
     label {
       display: block;
-      margin-top: 10px;
+      margin-top: 0.5rem;
     }
     input[type="text"], textarea {
       width: 100%;
-      padding: 8px;
-      margin-top: 4px;
-      border-radius: 4px;
+      padding: 0.5rem;
       border: 1px solid #ccc;
-    }
-    .checkbox-group {
-      margin-left: 15px;
-    }
-    .vitals input {
-      width: 80px;
-      margin-right: 10px;
-    }
-    .pe-section {
-      margin-top: 15px;
-    }
-    .pe-section textarea {
-      margin-top: 8px;
-    }
-    .visit-list button {
-      display: block;
-      margin: 5px 0;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      background: #d9f3f3;
       border-radius: 5px;
+      margin-top: 0.25rem;
+    }
+    .checkbox-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .vital-inputs, .pe-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .section-box {
+      background-color: #fff;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-top: 1rem;
+    }
+    .visit-entry {
+      border-bottom: 1px solid #ccc;
+      padding: 0.5rem 0;
       cursor: pointer;
+    }
+    .visit-entry:hover {
+      background-color: #f1f1f1;
     }
     .modal {
       position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-    }
-    .modal-content {
-      background: white;
-      padding: 20px;
-      width: 500px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+      z-index: 1000;
       max-height: 80vh;
       overflow-y: auto;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .modal-content h3 {
-      margin-top: 0;
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4);
+      z-index: 999;
     }
-    .modal-content button {
-      background: #79c2c2;
-      color: white;
-      border: none;
-      padding: 10px;
-      border-radius: 5px;
-      margin-top: 10px;
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
       cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="soap-form">
-      <h2>Subjective</h2>
-      <label>History of Present Illness</label>
-      <textarea rows="3"></textarea>
-      <label>Past Medical History</label>
-      <textarea rows="2"></textarea>
-      <label>Family Medical History</label>
-      <textarea rows="2"></textarea>
-      <label>Social and Environmental History</label>
-      <textarea rows="2"></textarea>
-
-      <h3>Review of Systems</h3>
-      <div class="checkbox-group">
-        <label><input type="checkbox" /> General: fever, chills, weight loss, loss of appetite</label>
-        <label><input type="checkbox" /> Skin: rashes, pruritus, jaundice</label>
-        <label><input type="checkbox" /> HEENT: hoarseness, blurry vision</label>
-        <label><input type="checkbox" /> Respiratory: cough, colds, dyspnea</label>
-        <label><input type="checkbox" /> Cardiovascular: chest pain, palpitations</label>
-        <label><input type="checkbox" /> Gastrointestinal: nausea, abdo pain, vomiting, dysphagia, constipation, diarrhea</label>
-        <label><input type="checkbox" /> Genitourinary: urine frequency, dysuria, hematuria</label>
-        <label><input type="checkbox" /> Musculoskeletal: weakness, joint pain, limited movement</label>
-        <label><input type="checkbox" /> Neurologic: headache, dizziness, numbness</label>
+  <header>🩺 ClinIQ - SOAP Note</header>
+  <div id="container">
+    <div id="main">
+      <div class="section-box">
+        <h2>Subjective</h2>
+        <label>History of Present Illness</label>
+        <textarea></textarea>
+        <label>Past Medical History</label>
+        <textarea></textarea>
+        <label>Family Medical History</label>
+        <textarea></textarea>
+        <label>Social and Environmental History</label>
+        <textarea></textarea>
+        <label>Review of Systems</label>
+        <div class="checkbox-section">
+          <label><input type="checkbox" /> General: (-) fever, chills, weight loss, appetite</label>
+          <label><input type="checkbox" /> Skin: (-) rashes, pruritus, jaundice</label>
+          <label><input type="checkbox" /> HEENT: (-) hoarseness, blurred vision</label>
+          <label><input type="checkbox" /> Respiratory: (-) cough, colds, dyspnea</label>
+          <label><input type="checkbox" /> Cardiovascular: (-) chest pain, palpitations</label>
+          <label><input type="checkbox" /> GI: (-) nausea, pain, vomiting, dysphagia</label>
+          <label><input type="checkbox" /> GU: (-) frequency, dysuria, hematuria</label>
+          <label><input type="checkbox" /> MSK: (-) weakness, knee/hip pain</label>
+          <label><input type="checkbox" /> Neuro: (-) headache, dizziness, numbness</label>
+        </div>
       </div>
 
-      <h2>Objective</h2>
-      <div class="vitals">
-        <label>BP <input type="text" /></label>
-        <label>HR <input type="text" /></label>
-        <label>RR <input type="text" /></label>
-        <label>Temp <input type="text" /></label>
-        <label>SpO2 <input type="text" /></label>
+      <div class="section-box">
+        <h2>Objective</h2>
+        <div class="vital-inputs">
+          <label>BP <input type="text" /></label>
+          <label>HR <input type="text" /></label>
+          <label>RR <input type="text" /></label>
+          <label>Temp <input type="text" /></label>
+          <label>SpO2 <input type="text" /></label>
+          <label>Height (cm) <input type="number" id="height" onchange="calcBMI()"/></label>
+          <label>Weight (kg) <input type="number" id="weight" onchange="calcBMI()"/></label>
+          <label>BMI <input type="text" id="bmi" readonly /></label>
+        </div>
+        <div class="pe-section">
+          <div>
+            <label><input type="checkbox" /> General: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Neurology: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Skin: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> HEENT: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Respiratory: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Cardiovascular: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Abdomen: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Musculoskeletal: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+          <div>
+            <label><input type="checkbox" /> Reproductive: Unremarkable PE</label>
+            <textarea placeholder="Positive findings"></textarea>
+          </div>
+        </div>
       </div>
 
-      <label>Height (cm) <input type="number" id="height" /></label>
-      <label>Weight (kg) <input type="number" id="weight" /></label>
-      <p>BMI: <span id="bmi">--</span></p>
-
-      <script>
-        document.getElementById("height").addEventListener("input", calculateBMI);
-        document.getElementById("weight").addEventListener("input", calculateBMI);
-
-        function calculateBMI() {
-          const h = parseFloat(document.getElementById("height").value) / 100;
-          const w = parseFloat(document.getElementById("weight").value);
-          const bmi = h && w ? (w / (h * h)).toFixed(2) : '--';
-          document.getElementById("bmi").innerText = bmi;
-        }
-      </script>
-
-      <h3>Physical Examination</h3>
-      <div class="pe-section">
-        <label>General</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1" placeholder="Positive findings"></textarea>
-
-        <label>Neurology</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Skin</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>HEENT</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Respiratory</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Cardiovascular</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Abdomen</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Musculoskeletal</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
-
-        <label>Reproductive System</label>
-        <input type="checkbox" /> Unremarkable PE
-        <textarea rows="1"></textarea>
+      <div class="section-box">
+        <h2>Assessment</h2>
+        <textarea></textarea>
       </div>
 
-      <h2>Assessment</h2>
-      <textarea rows="3"></textarea>
-
-      <h2>Plan</h2>
-      <textarea rows="3"></textarea>
+      <div class="section-box">
+        <h2>Plan</h2>
+        <textarea></textarea>
+      </div>
     </div>
-
-    <div class="sidebar">
-      <h3>Previous Visits</h3>
-      <div class="visit-list">
-        <button onclick="showModal('July 20, 2025')">July 20, 2025</button>
-        <button onclick="showModal('June 15, 2025')">June 15, 2025</button>
-      </div>
+    <div id="sidebar">
+      <h3>Past Visits</h3>
+      <div class="visit-entry" onclick="showModal('July 12, 2025')">🗓 July 12, 2025</div>
+      <div class="visit-entry" onclick="showModal('July 5, 2025')">🗓 July 5, 2025</div>
     </div>
   </div>
 
-  <div id="modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <h3>Previous Visit</h3>
-      <p id="modalText"></p>
-      <button onclick="copyToCurrent()">Copy to Current</button>
-      <button onclick="closeModal()">Close</button>
-    </div>
+  <div class="modal-overlay" id="overlay" style="display:none" onclick="closeModal()"></div>
+  <div class="modal" id="modal" style="display:none">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <h3 id="modal-title"></h3>
+    <p>This is a read-only view of the SOAP entry on the selected date. Future enhancement: load from database/file.</p>
   </div>
 
   <script>
-    function showModal(date) {
-      document.getElementById("modal").style.display = "flex";
-      document.getElementById("modalText").innerText = `Sample notes from ${date}`;
+    function calcBMI() {
+      const height = parseFloat(document.getElementById("height").value);
+      const weight = parseFloat(document.getElementById("weight").value);
+      if (height > 0 && weight > 0) {
+        const bmi = weight / ((height / 100) ** 2);
+        document.getElementById("bmi").value = bmi.toFixed(1);
+      }
     }
+
+    function showModal(date) {
+      document.getElementById("modal-title").innerText = `SOAP for ${date}`;
+      document.getElementById("modal").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+    }
+
     function closeModal() {
       document.getElementById("modal").style.display = "none";
-    }
-    function copyToCurrent() {
-      alert("Copied contents to current entry.");
-      closeModal();
+      document.getElementById("overlay").style.display = "none";
     }
   </script>
 </body>
