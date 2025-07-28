@@ -5,216 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SOAP Note</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
       background: #eaf6f6;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       height: 100vh;
-      padding: 20px;
     }
     .container {
       display: flex;
-      gap: 20px;
-      width: 100%;
-      max-width: 1400px;
-    }
-    .form-section {
-      flex: 3;
+      width: 95%;
+      max-width: 1600px;
+      height: 95vh;
       background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .soap-form {
+      flex: 2;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
-      max-height: calc(100vh - 40px);
     }
     .sidebar {
       flex: 1;
-      background: #ffffff;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-left: 1px solid #ccc;
+      padding: 20px;
+      background: #f7f9f9;
       overflow-y: auto;
-      max-height: calc(100vh - 40px);
     }
     h2 {
-      margin-top: 0;
-      color: #333;
-    }
-    .section {
-      margin-bottom: 20px;
+      margin-top: 20px;
     }
     label {
       display: block;
       margin-top: 10px;
     }
-    input[type="text"],
-    input[type="number"],
-    textarea {
+    input[type="text"], textarea {
       width: 100%;
       padding: 8px;
-      margin-top: 5px;
+      margin-top: 4px;
+      border-radius: 4px;
       border: 1px solid #ccc;
+    }
+    .checkbox-group {
+      margin-left: 15px;
+    }
+    .vitals input {
+      width: 80px;
+      margin-right: 10px;
+    }
+    .pe-section {
+      margin-top: 15px;
+    }
+    .pe-section textarea {
+      margin-top: 8px;
+    }
+    .visit-list button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      background: #d9f3f3;
       border-radius: 5px;
-      font-size: 14px;
+      cursor: pointer;
     }
-    .checkboxes label {
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.3);
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 5px;
-      margin-top: 5px;
+      z-index: 10;
     }
-    .row {
-      display: flex;
-      gap: 10px;
+    .modal-content {
+      background: white;
+      padding: 20px;
+      width: 500px;
+      max-height: 80vh;
+      overflow-y: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
     }
-    .row input {
-      flex: 1;
+    .modal-content h3 {
+      margin-top: 0;
     }
-    .bmi-result {
-      font-weight: bold;
-      margin-top: 5px;
+    .modal-content button {
+      background: #79c2c2;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="form-section">
-      <h2>SOAP Note</h2>
+    <div class="soap-form">
+      <h2>Subjective</h2>
+      <label>History of Present Illness</label>
+      <textarea rows="3"></textarea>
+      <label>Past Medical History</label>
+      <textarea rows="2"></textarea>
+      <label>Family Medical History</label>
+      <textarea rows="2"></textarea>
+      <label>Social and Environmental History</label>
+      <textarea rows="2"></textarea>
 
-      <div class="section">
-        <h3>Subjective</h3>
-        <label>History of Present Illness</label>
-        <textarea rows="3"></textarea>
-        <label>Past Medical History</label>
-        <textarea rows="2"></textarea>
-        <label>Family Medical History</label>
-        <textarea rows="2"></textarea>
-        <label>Social and Environmental History</label>
-        <textarea rows="2"></textarea>
-        <label>Review of Systems</label>
-        <div class="checkboxes">
-          <strong>General:</strong>
-          <label><input type="checkbox"> fever</label>
-          <label><input type="checkbox"> chills</label>
-          <label><input type="checkbox"> unintentional weight loss</label>
-          <label><input type="checkbox"> loss of appetite</label>
-
-          <strong>Skin:</strong>
-          <label><input type="checkbox"> rashes</label>
-          <label><input type="checkbox"> pruritus</label>
-          <label><input type="checkbox"> jaundice</label>
-
-          <strong>HEENT:</strong>
-          <label><input type="checkbox"> hoarseness of voice</label>
-          <label><input type="checkbox"> blurring of vision</label>
-
-          <strong>Respiratory:</strong>
-          <label><input type="checkbox"> cough</label>
-          <label><input type="checkbox"> colds</label>
-          <label><input type="checkbox"> dyspnea</label>
-
-          <strong>Cardiovascular:</strong>
-          <label><input type="checkbox"> chest pain</label>
-          <label><input type="checkbox"> palpitations</label>
-
-          <strong>Gastrointestinal:</strong>
-          <label><input type="checkbox"> nausea</label>
-          <label><input type="checkbox"> abdominal pain</label>
-          <label><input type="checkbox"> vomiting</label>
-          <label><input type="checkbox"> dysphagia</label>
-          <label><input type="checkbox"> constipation</label>
-          <label><input type="checkbox"> diarrhea</label>
-
-          <strong>Genitourinary:</strong>
-          <label><input type="checkbox"> change in urine frequency</label>
-          <label><input type="checkbox"> dysuria</label>
-          <label><input type="checkbox"> hematuria</label>
-
-          <strong>Musculoskeletal:</strong>
-          <label><input type="checkbox"> weakness</label>
-          <label><input type="checkbox"> bilateral knee and hip pain</label>
-          <label><input type="checkbox"> limitation of movement</label>
-
-          <strong>Neurologic:</strong>
-          <label><input type="checkbox"> throbbing headache</label>
-          <label><input type="checkbox"> dizziness</label>
-          <label><input type="checkbox"> numbness</label>
-        </div>
+      <h3>Review of Systems</h3>
+      <div class="checkbox-group">
+        <label><input type="checkbox" /> General: fever, chills, weight loss, loss of appetite</label>
+        <label><input type="checkbox" /> Skin: rashes, pruritus, jaundice</label>
+        <label><input type="checkbox" /> HEENT: hoarseness, blurry vision</label>
+        <label><input type="checkbox" /> Respiratory: cough, colds, dyspnea</label>
+        <label><input type="checkbox" /> Cardiovascular: chest pain, palpitations</label>
+        <label><input type="checkbox" /> Gastrointestinal: nausea, abdo pain, vomiting, dysphagia, constipation, diarrhea</label>
+        <label><input type="checkbox" /> Genitourinary: urine frequency, dysuria, hematuria</label>
+        <label><input type="checkbox" /> Musculoskeletal: weakness, joint pain, limited movement</label>
+        <label><input type="checkbox" /> Neurologic: headache, dizziness, numbness</label>
       </div>
 
-      <div class="section">
-        <h3>Objective</h3>
-        <div class="row">
-          <label>BP <input type="text"></label>
-          <label>HR <input type="text"></label>
-          <label>RR <input type="text"></label>
-          <label>Temp <input type="text"></label>
-          <label>SpO2 <input type="text"></label>
-        </div>
-        <div class="row">
-          <label>Height (cm) <input type="number" id="height"></label>
-          <label>Weight (kg) <input type="number" id="weight"></label>
-        </div>
-        <div class="bmi-result" id="bmiResult">BMI: </div>
-
-        <label>Physical Examination</label>
-        <div class="checkboxes">
-          <label><input type="checkbox"> Unremarkable PE</label>
-          <label>General <input type="text"></label>
-          <label>Neurology <input type="text"></label>
-          <label>Skin <input type="text"></label>
-          <label>HEENT <input type="text"></label>
-          <label>Respiratory <input type="text"></label>
-          <label>Cardiovascular <input type="text"></label>
-          <label>Abdomen <input type="text"></label>
-          <label>Musculoskeletal <input type="text"></label>
-          <label>Reproductive system <input type="text"></label>
-        </div>
+      <h2>Objective</h2>
+      <div class="vitals">
+        <label>BP <input type="text" /></label>
+        <label>HR <input type="text" /></label>
+        <label>RR <input type="text" /></label>
+        <label>Temp <input type="text" /></label>
+        <label>SpO2 <input type="text" /></label>
       </div>
 
-      <div class="section">
-        <h3>Assessment</h3>
-        <textarea rows="3"></textarea>
+      <label>Height (cm) <input type="number" id="height" /></label>
+      <label>Weight (kg) <input type="number" id="weight" /></label>
+      <p>BMI: <span id="bmi">--</span></p>
+
+      <script>
+        document.getElementById("height").addEventListener("input", calculateBMI);
+        document.getElementById("weight").addEventListener("input", calculateBMI);
+
+        function calculateBMI() {
+          const h = parseFloat(document.getElementById("height").value) / 100;
+          const w = parseFloat(document.getElementById("weight").value);
+          const bmi = h && w ? (w / (h * h)).toFixed(2) : '--';
+          document.getElementById("bmi").innerText = bmi;
+        }
+      </script>
+
+      <h3>Physical Examination</h3>
+      <div class="pe-section">
+        <label>General</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1" placeholder="Positive findings"></textarea>
+
+        <label>Neurology</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Skin</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>HEENT</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Respiratory</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Cardiovascular</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Abdomen</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Musculoskeletal</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
+
+        <label>Reproductive System</label>
+        <input type="checkbox" /> Unremarkable PE
+        <textarea rows="1"></textarea>
       </div>
 
-      <div class="section">
-        <h3>Plan</h3>
-        <textarea rows="3"></textarea>
-      </div>
+      <h2>Assessment</h2>
+      <textarea rows="3"></textarea>
+
+      <h2>Plan</h2>
+      <textarea rows="3"></textarea>
     </div>
 
     <div class="sidebar">
       <h3>Previous Visits</h3>
-      <ul>
-        <li>Visit on 2025-07-15: URI symptoms, given antibiotics</li>
-        <li>Visit on 2025-06-20: Routine check-up</li>
-        <li>Visit on 2025-05-05: F/U Hypertension</li>
-      </ul>
+      <div class="visit-list">
+        <button onclick="showModal('July 20, 2025')">July 20, 2025</button>
+        <button onclick="showModal('June 15, 2025')">June 15, 2025</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <h3>Previous Visit</h3>
+      <p id="modalText"></p>
+      <button onclick="copyToCurrent()">Copy to Current</button>
+      <button onclick="closeModal()">Close</button>
     </div>
   </div>
 
   <script>
-    const heightInput = document.getElementById('height');
-    const weightInput = document.getElementById('weight');
-    const bmiResult = document.getElementById('bmiResult');
-
-    function calculateBMI() {
-      const height = parseFloat(heightInput.value);
-      const weight = parseFloat(weightInput.value);
-      if (!isNaN(height) && !isNaN(weight) && height > 0) {
-        const heightMeters = height / 100;
-        const bmi = (weight / (heightMeters * heightMeters)).toFixed(2);
-        bmiResult.textContent = `BMI: ${bmi}`;
-      } else {
-        bmiResult.textContent = 'BMI: ';
-      }
+    function showModal(date) {
+      document.getElementById("modal").style.display = "flex";
+      document.getElementById("modalText").innerText = `Sample notes from ${date}`;
     }
-
-    heightInput.addEventListener('input', calculateBMI);
-    weightInput.addEventListener('input', calculateBMI);
+    function closeModal() {
+      document.getElementById("modal").style.display = "none";
+    }
+    function copyToCurrent() {
+      alert("Copied contents to current entry.");
+      closeModal();
+    }
   </script>
 </body>
 </html>
