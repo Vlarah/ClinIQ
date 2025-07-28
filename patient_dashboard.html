@@ -2,172 +2,135 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOAP Input - ClinIQ</title>
+    <title>Patient Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background-color: #fdf6f0;
+            background-color: #fdfafa;
             margin: 0;
             padding: 0;
         }
-        header {
-            background-color: #fddde6;
-            color: #333;
-            padding: 20px;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            border-bottom: 3px solid #fbbec5;
-        }
+
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            display: flex;
+            height: 100vh;
             padding: 20px;
-            background: #fff7f7;
+            box-sizing: border-box;
+        }
+
+        .soap-form, .visit-history {
+            background-color: #fff;
             border-radius: 16px;
-            box-shadow: 0 0 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin: 10px;
         }
+
+        .soap-form {
+            flex: 2;
+        }
+
+        .visit-history {
+            flex: 1;
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
+        }
+
         h2 {
-            font-size: 20px;
-            background-color: #ffeef3;
-            padding: 10px;
-            border-radius: 12px;
-            margin-top: 20px;
+            margin-top: 0;
+            color: #444;
         }
-        textarea, input[type="text"], input[type="number"] {
+
+        textarea, input[type="text"] {
             width: 100%;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 12px;
             border: 1px solid #ccc;
-            margin-top: 5px;
-            margin-bottom: 10px;
+            border-radius: 10px;
             font-size: 14px;
         }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: 500;
-        }
-        .section-toggle {
-            margin-bottom: 10px;
-        }
-        .checkbox {
-            margin-right: 10px;
-        }
-        .hidden {
-            display: none;
-        }
-        .card {
-            background-color: #fff;
-            border: 1px solid #f0c7d1;
-            padding: 15px;
-            border-radius: 12px;
-            margin-top: 10px;
-        }
+
         .btn {
-            background-color: #fbbec5;
-            color: #333;
-            padding: 10px 20px;
+            background-color: #6cb4f0;
             border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 15px;
             border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
         }
-        .btn:hover {
-            background-color: #f99ea8;
+
+        .visit-entry {
+            background-color: #f3f8fc;
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .visit-entry:hover {
+            background-color: #e0efff;
+        }
+
+        .header {
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .header p {
+            color: #555;
+        }
+
+        .back-button {
+            margin-bottom: 15px;
+            display: inline-block;
+            text-decoration: none;
+            color: #6cb4f0;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <header>SOAP Note Input - ClinIQ 🩺</header>
     <div class="container">
-        <h2>Subjective</h2>
-        <label for="hpi">History of Present Illness:</label>
-        <textarea id="hpi" rows="3"></textarea>
+        <div class="soap-form">
+            <a href="{{ url_for('dashboard') }}" class="back-button">← Back to Clinic Dashboard</a>
+            <div class="header">
+                <h1>{{ patient.full_name }}</h1>
+                <p>Age: {{ patient.age }} | Sex: {{ patient.sex }} | Reg #: {{ patient.reg_number }}</p>
+            </div>
+            <form method="POST">
+                <h2>Today's Visit</h2>
+                <label>Subjective:</label>
+                <textarea name="subjective" rows="3" required></textarea>
 
-        <label for="pmh">Past Medical History:</label>
-        <textarea id="pmh" rows="2"></textarea>
+                <label>Objective:</label>
+                <textarea name="objective" rows="3" required></textarea>
 
-        <label for="fmh">Family Medical History:</label>
-        <textarea id="fmh" rows="2"></textarea>
+                <label>Assessment:</label>
+                <input type="text" name="assessment" required>
 
-        <label for="seh">Social & Environmental History:</label>
-        <textarea id="seh" rows="2"></textarea>
+                <label>Plan:</label>
+                <textarea name="plan" rows="3" required></textarea>
 
-        <div class="section-toggle">
-            <input type="checkbox" id="show_ros" checked onclick="toggleSection('ros')">
-            <label class="checkbox" for="show_ros">Show Review of Systems (ROS)</label>
-        </div>
-        <div id="ros" class="card">
-            <label><input type="checkbox" checked> General: No fever, weight loss, or fatigue.</label>
-            <label><input type="checkbox" checked> HEENT: No headache, vision/hearing changes.</label>
-            <label><input type="checkbox" checked> Respiratory: No cough or dyspnea.</label>
-            <label><input type="checkbox" checked> Cardiovascular: No chest pain or palpitations.</label>
-            <label><input type="checkbox" checked> Gastrointestinal: No nausea, vomiting, or diarrhea.</label>
-            <label><input type="checkbox" checked> Genitourinary: No dysuria or hematuria.</label>
-            <label><input type="checkbox" checked> Neurologic: No weakness, numbness, or seizures.</label>
-            <label><input type="checkbox" checked> Musculoskeletal: No joint pain or swelling.</label>
-            <label><input type="checkbox" checked> Skin: No rashes or lesions.</label>
+                <button class="btn" type="submit">Save Visit</button>
+            </form>
         </div>
 
-        <h2>Objective</h2>
-        <label>Height (cm): <input type="number" id="height" onchange="calculateBMI()"></label>
-        <label>Weight (kg): <input type="number" id="weight" onchange="calculateBMI()"></label>
-        <p><strong>BMI:</strong> <span id="bmi_result">-</span> | <span id="bmi_category"></span></p>
-
-        <label for="vitals">Vital Signs:</label>
-        <textarea id="vitals" rows="2"></textarea>
-
-        <div class="section-toggle">
-            <input type="checkbox" id="show_pe" checked onclick="toggleSection('pe')">
-            <label class="checkbox" for="show_pe">Show Physical Examination</label>
+        <div class="visit-history">
+            <h2>Previous Visits</h2>
+            {% for visit in visits %}
+            <div class="visit-entry">
+                <strong>{{ visit.date }}</strong><br>
+                <span><em>{{ visit.assessment }}</em></span>
+                <!-- You can expand this to show full SOAP if clicked -->
+            </div>
+            {% endfor %}
         </div>
-        <div id="pe" class="card">
-            <label><input type="checkbox" checked> General: Awake, alert, not in distress.</label>
-            <label><input type="checkbox" checked> HEENT: Normocephalic, no scleral icterus or nasal discharge.</label>
-            <label><input type="checkbox" checked> Neck: Supple, no lymphadenopathy or JVD.</label>
-            <label><input type="checkbox" checked> Chest/Lungs: Clear breath sounds, no rales/wheezes.</label>
-            <label><input type="checkbox" checked> Cardiovascular: Regular rate/rhythm, no murmurs.</label>
-            <label><input type="checkbox" checked> Abdomen: Soft, non-tender, no organomegaly.</label>
-            <label><input type="checkbox" checked> Extremities: No cyanosis, clubbing, or edema.</label>
-            <label><input type="checkbox" checked> Neurologic: Grossly intact, alert.</label>
-        </div>
-
-        <label for="labs">Lab/Imaging Results:</label>
-        <textarea id="labs" rows="3"></textarea>
-
-        <h2>Assessment</h2>
-        <textarea rows="3"></textarea>
-
-        <h2>Plan</h2>
-        <textarea rows="3"></textarea>
-
-        <br><br>
-        <button class="btn" onclick="window.print()">🖨️ Print/Export</button>
     </div>
-
-    <script>
-        function toggleSection(id) {
-            const section = document.getElementById(id);
-            section.classList.toggle('hidden');
-        }
-
-        function calculateBMI() {
-            const height = parseFloat(document.getElementById("height").value);
-            const weight = parseFloat(document.getElementById("weight").value);
-            if (height && weight) {
-                const bmi = weight / ((height / 100) ** 2);
-                document.getElementById("bmi_result").textContent = bmi.toFixed(1);
-                let category = "";
-                if (bmi < 18.5) category = "Underweight";
-                else if (bmi < 23) category = "Normal (Asia-Pacific)";
-                else if (bmi < 25) category = "Overweight (At Risk)";
-                else if (bmi < 30) category = "Obese I";
-                else category = "Obese II";
-                document.getElementById("bmi_category").textContent = category;
-            }
-        }
-    </script>
 </body>
 </html>
