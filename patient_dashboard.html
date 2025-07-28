@@ -4,193 +4,225 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClinIQ - SOAP Note</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
+      font-family: 'Roboto', sans-serif;
       margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: #eaf6f6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 0;
+      background: #f3f4f6;
     }
     header {
-      width: 100%;
-      background-color: #ade8f4;
-      padding: 1rem 2rem;
       display: flex;
       align-items: center;
-      gap: 1rem;
+      padding: 1rem;
+      background: #4f46e5;
+      color: white;
     }
     header img {
       height: 40px;
+      margin-right: 10px;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #023e8a;
-    }
-    main {
+    .container {
       display: flex;
-      justify-content: space-between;
-      width: 90%;
-      margin-top: 2rem;
-    }
-    .form-container {
-      background: #ffffff;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      flex: 2;
-      margin-right: 2rem;
-    }
-    .right-panel {
-      flex: 1;
-      background: #ffffff;
+      flex-direction: row;
       padding: 1rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
-    h2 {
-      color: #0077b6;
+    .main {
+      flex: 2;
+      padding-right: 1rem;
+    }
+    .sidebar {
+      flex: 1;
+      background: #fff;
+      padding: 1rem;
+      border-left: 2px solid #ccc;
+      overflow-y: auto;
+      max-height: calc(100vh - 80px);
     }
     textarea {
       width: 100%;
-      height: 100px;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
+      height: 60px;
+      margin-bottom: 10px;
     }
-    .checkbox-section {
-      background-color: #f1f7f7;
+    input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+    }
+    .section {
+      background: white;
       padding: 1rem;
-      border-radius: 0.5rem;
       margin-bottom: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.05);
+    }
+    h2 {
+      margin-top: 0;
     }
     .checkbox-group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 0.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 5px;
     }
-    .checkbox-group label {
+    label {
       display: flex;
       align-items: center;
-      background: #e0fbfc;
-      padding: 0.4rem 0.6rem;
-      border-radius: 0.5rem;
     }
-    .checkbox-group input {
-      margin-right: 0.5rem;
+    label input {
+      margin-right: 5px;
     }
-    .unremarkable-toggle {
-      margin: 0.5rem 0;
-    }
-    button {
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      background-color: #00b4d8;
-      color: white;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-    .visit-entry {
-      background-color: #f1f1f1;
-      padding: 0.5rem;
-      margin-bottom: 0.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-    }
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      max-width: 500px;
-      display: none;
-    }
-    .modal.active {
-      display: block;
+    .pe-block {
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="ClinIQ Logo" />
+    <img src="logo.png" alt="ClinIQ Logo">
     <h1>ClinIQ 🩺</h1>
   </header>
-  <main>
-    <div class="form-container">
-      <h2>SOAP Note</h2>
-      <label>Subjective:</label>
-      <textarea></textarea>
-
-      <div class="checkbox-section">
-        <strong>Review of Systems:</strong>
+  <div class="container">
+    <div class="main">
+      <div class="section">
+        <h2>Subjective</h2>
+        <textarea placeholder="History of Present Illness"></textarea>
+        <textarea placeholder="Past Medical History"></textarea>
+        <textarea placeholder="Family Medical History"></textarea>
+        <textarea placeholder="Social and Environmental History"></textarea>
+        <h3>Review of Systems</h3>
         <div class="checkbox-group">
-          <label><input type="checkbox" /> General</label>
-          <label><input type="checkbox" /> Fever</label>
-          <label><input type="checkbox" /> Chills</label>
-          <label><input type="checkbox" /> Weight Loss</label>
-          <label><input type="checkbox" /> Appetite</label>
+          <label><input type="checkbox"> General: fever</label>
+          <label><input type="checkbox"> chills</label>
+          <label><input type="checkbox"> unintentional weight loss</label>
+          <label><input type="checkbox"> loss of appetite</label>
+
+          <label><input type="checkbox"> Skin: rashes</label>
+          <label><input type="checkbox"> pruritus</label>
+          <label><input type="checkbox"> jaundice</label>
+
+          <label><input type="checkbox"> HEENT: hoarseness of voice</label>
+          <label><input type="checkbox"> blurring of vision</label>
+
+          <label><input type="checkbox"> Respiratory: cough</label>
+          <label><input type="checkbox"> colds</label>
+          <label><input type="checkbox"> dyspnea</label>
+
+          <label><input type="checkbox"> Cardiovascular: chest pain</label>
+          <label><input type="checkbox"> palpitations</label>
+
+          <label><input type="checkbox"> Gastrointestinal: nausea</label>
+          <label><input type="checkbox"> abdominal pain</label>
+          <label><input type="checkbox"> vomiting</label>
+          <label><input type="checkbox"> dysphagia</label>
+          <label><input type="checkbox"> constipation</label>
+          <label><input type="checkbox"> diarrhea</label>
+
+          <label><input type="checkbox"> Genitourinary: change in urine frequency</label>
+          <label><input type="checkbox"> dysuria</label>
+          <label><input type="checkbox"> hematuria</label>
+
+          <label><input type="checkbox"> Musculoskeletal: weakness</label>
+          <label><input type="checkbox"> bilateral knee and hip pain</label>
+          <label><input type="checkbox"> limitation of movement</label>
+
+          <label><input type="checkbox"> Neurologic: throbbing headache</label>
+          <label><input type="checkbox"> dizziness</label>
+          <label><input type="checkbox"> numbness</label>
         </div>
-        <!-- Add more systems similarly -->
       </div>
 
-      <label>Objective:</label>
-      <textarea></textarea>
+      <div class="section">
+        <h2>Objective</h2>
+        <input type="text" placeholder="BP">
+        <input type="text" placeholder="HR">
+        <input type="text" placeholder="RR">
+        <input type="text" placeholder="Temp">
+        <input type="text" placeholder="SpO2">
+        <input type="number" id="height" placeholder="Height (cm)">
+        <input type="number" id="weight" placeholder="Weight (kg)" oninput="calculateBMI()">
+        <input type="text" id="bmi" placeholder="BMI" readonly>
 
-      <div class="checkbox-section">
-        <strong>Physical Exam:</strong>
-        <div class="unremarkable-toggle">
-          <label><input type="checkbox" /> General Unremarkable</label>
+        <h3>Physical Examination</h3>
+        <div class="pe-block">
+          <label><input type="checkbox"> General: Unremarkable</label>
+          <textarea></textarea>
         </div>
-        <div class="unremarkable-toggle">
-          <label><input type="checkbox" /> Neurology Unremarkable</label>
+        <div class="pe-block">
+          <label><input type="checkbox"> Neurology: Unremarkable</label>
+          <textarea></textarea>
         </div>
-        <div class="unremarkable-toggle">
-          <label><input type="checkbox" /> Skin Unremarkable</label>
+        <div class="pe-block">
+          <label><input type="checkbox"> Skin: Unremarkable</label>
+          <textarea></textarea>
         </div>
-        <!-- Add other categories here -->
+        <div class="pe-block">
+          <label><input type="checkbox"> HEENT: Unremarkable</label>
+          <textarea></textarea>
+        </div>
+        <div class="pe-block">
+          <label><input type="checkbox"> Respiratory: Unremarkable</label>
+          <textarea></textarea>
+        </div>
+        <div class="pe-block">
+          <label><input type="checkbox"> Cardiovascular: Unremarkable</label>
+          <textarea></textarea>
+        </div>
+        <div class="pe-block">
+          <label><input type="checkbox"> Abdomen: Unremarkable</label>
+          <textarea></textarea>
+        </div>
+        <div class="pe-block">
+          <label><input type="checkbox"> Musculoskeletal: Unremarkable</label>
+          <textarea></textarea>
+        </div>
+        <div class="pe-block">
+          <label><input type="checkbox"> Reproductive system: Unremarkable</label>
+          <textarea></textarea>
+        </div>
       </div>
 
-      <label>Assessment:</label>
-      <textarea></textarea>
+      <div class="section">
+        <h2>Assessment</h2>
+        <textarea></textarea>
+      </div>
 
-      <label>Plan:</label>
-      <textarea></textarea>
-
-      <button>Save Visit</button>
-      <button>Export as PDF</button>
-      <button>Export to LibreOffice</button>
+      <div class="section">
+        <h2>Plan</h2>
+        <textarea></textarea>
+      </div>
     </div>
 
-    <div class="right-panel">
+    <div class="sidebar">
       <h3>Previous Visits</h3>
-      <div class="visit-entry" onclick="showModal('Visit from July 20')">July 20, 2025</div>
-      <div class="visit-entry" onclick="showModal('Visit from July 14')">July 14, 2025</div>
-      <div class="visit-entry" onclick="showModal('Visit from July 3')">July 3, 2025</div>
+      <ul id="visitList">
+        <li><a href="#" onclick="openModal('2025-07-10')">Visit on 2025-07-10</a></li>
+        <li><a href="#" onclick="openModal('2025-07-05')">Visit on 2025-07-05</a></li>
+      </ul>
     </div>
-  </main>
+  </div>
 
-  <div id="modal" class="modal">
-    <h3>Previous Visit</h3>
-    <p id="modal-content"></p>
+  <div id="modal" style="display:none; position:fixed; top:10%; left:10%; width:80%; height:80%; background:white; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.3); padding:1rem; overflow:auto; z-index:1000;">
     <button onclick="closeModal()">Close</button>
+    <h2 id="modalTitle"></h2>
+    <p>Sample SOAP entry here...</p>
   </div>
 
   <script>
-    function showModal(content) {
-      document.getElementById("modal-content").innerText = content;
-      document.getElementById("modal").classList.add("active");
+    function openModal(date) {
+      document.getElementById('modalTitle').textContent = 'Visit on ' + date;
+      document.getElementById('modal').style.display = 'block';
     }
     function closeModal() {
-      document.getElementById("modal").classList.remove("active");
+      document.getElementById('modal').style.display = 'none';
+    }
+    function calculateBMI() {
+      const height = parseFloat(document.getElementById('height').value) / 100;
+      const weight = parseFloat(document.getElementById('weight').value);
+      if (height && weight) {
+        const bmi = weight / (height * height);
+        document.getElementById('bmi').value = bmi.toFixed(2);
+      }
     }
   </script>
 </body>
